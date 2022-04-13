@@ -1,31 +1,53 @@
-import Layout from './Component/Layout';
-import {Routes , Route} from 'react-router-dom';
-import About from "./Component/Pages/About";
-import Blog from "./Component/Pages/Blog";
-import Contact from "./Component/Pages/Contact";
-import Home from "./Component/Pages/Home";
-import NotFound from "./Component/Pages/NotFound";
-import Posts from './Component/Pages/Posts';
-import SinglePost from './Component/Pages/SinglePost';
-import './App.css'
-function App() {
- 
+import React,{useReducer,useState} from 'react'
+import reducer from './reducer'
+import { useSelector,useDispatch } from 'react-redux'
+import {increment,decrement,reset} from './store/counter/counter';
+import { deleteUsers } from './store/Users/user';
+import {changeing} from './store/changeColor/changeColor'
+export default function App() {
+    // const count=useSelector((state)=>state.counter);
+    // const users=useSelector(state=>state.users);
+    // const[counter,dispatch] = useReducer(reducer,0)
+    const [guyn,setGuyn]=useState()
+    const [count,users,colors]=useSelector(state=>[
+        state.counter,
+        state.users,
+        state.colors
+    ])
+    console.log(colors);
+    const dispatch=useDispatch()
   return (
-    <>
-     <Routes>
-       <Route path="/" element={<Layout/>}>
-       <Route index  element={<Home/>}/>
-       <Route path="about" element={<About/>}/>
-       <Route path="posts" element={<Posts/>}/>
-       <Route path='posts/:id' element={<SinglePost/>}/>
-       <Route path="blog" element={<Blog/>}/>
-       <Route path="contact" element={<Contact/>}/>
-       <Route path="*" element={<NotFound/>}/>
-       </Route>
-     </Routes>
-   
-    </>
-  );
-}
+    <div>
+        <button onClick={()=>setGuyn(prompt())}></button>
+        {count}
+        <button onClick={()=>dispatch(increment())}>+</button>
+        <button onClick={()=>dispatch(decrement())}>-</button>
+        <button onClick={()=>dispatch(reset())}>reset</button>
+        <button onClick={()=>dispatch(changeing(guyn))}>color</button>
+     {users.map(i=>(
+         <li key={i.id}
+          onClick={()=>dispatch(deleteUsers(i.id))} 
+          style={{color:colors.color}}>
+            {i.name}
+              </li>
+     ))}
 
-export default App;
+
+
+
+
+
+
+    {/* {counter}
+    <button onClick={()=>dispatch(
+        {
+            type:'Increment',
+            payload:5
+        }
+        )}>+</button>
+    <button onClick={()=>dispatch({type:'Decrement'})}>-</button>
+    <button onClick={()=>dispatch({type:'Reset'})}>reset</button> */}
+
+    </div>
+  )
+}
