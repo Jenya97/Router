@@ -1,6 +1,6 @@
 a{
   text-decoration: none;
 }
-.active{
-  text-decoration: underline;
+.complete{
+  text-decoration: line-through;
 }
